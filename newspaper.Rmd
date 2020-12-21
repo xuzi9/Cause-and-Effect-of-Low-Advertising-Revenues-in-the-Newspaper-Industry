@@ -1,0 +1,20 @@
+---
+title: "Newspapers in Times of Low Advertising Revenues"
+author: "Zikun (Alex) Xu"
+date: "12/22/2020"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("tidyverse")
+#install.packages("brms")
+#install.packages("dplyr")
+#install.packages("here")
+library(tidyverse)
+library(broom)
+library(here)
+
+```
