@@ -2,9 +2,14 @@
 title: "Newspapers in Times of Low Advertising Revenues"
 author: "Zikun (Alex) Xu"
 date: "12/22/2020"
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
 ---
 
+Author: Zikun (Alex) Xu
+Date: 12/22/2020
+Github repo: https://github.com/xuzi9/final
 
 ```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -17,18 +22,22 @@ library(here)
 library(haven)
 library(huxtable)
 library(scales)
+library(tinytex)
 library(tidyverse)
-
 ```
 
 #Abstract
 
 
 
-
 #Introduction
+In this study, we reproduce the key findings and analyze the data referred from Angelucci and Cage's "Newspapers in Times of Low Advertising Revenues" paper. This paper finds robust evidence that examines the effect of a decrease in the amount of journalist-intensive content produced and the reduction of subscription prices. This data-set was built on newspapers from France between the years 1960 and 1974. As newspaper publishing companies reduce the amount of money invested into journalistic intensive content, specifically due to a decrease in advertising revenue, a difference in differences analysis was performed right between the introduction of television broadcast and advertising was widely accepted. 
 
+Regressions were modeled linearly between the consequences of newspapers' content and the impact of reduction of ad revenue. The paper talks about an example that caught their interest as advertisement revenues for US newspaper companies decreased by almost $30 billion between 2000 and 2019, and average number of journalist per newspaper decreased by nearly 16%. While the introduction of online media and "internet driven" news content has driven the old fashioned newspaper industry economically slow and heavy decrease in viewership, the precise reasons have not been thoroughly analyzed. By giving insight to the relationship between advertisement revenues and newspapers' choices relating to the size of their newsroom, the amount of news being produced, and the different pricing strategies, we were able to find out why we see a decline in advertisement companies' willingness to pay for consumers' attention. 
 
+The alternative to newspaper - television platforms - allows advertisement that specifically targets an individual or a group for different purposes such as using a search engine to find specific genre of products. In this paper, we build a model in which the newspaper companies chooses the size of newsroom, prices it charges for the paper, and prices it charges for advertisers. The results of this framework allows us to understand if a relationship between advertising revenues, the number of journalists, and the composition of readership exists and what consequences does an increase or decrease in revenues conclude. Specifically, this model predicts that a drop in advertising revenues may or may not cause a decrease in the amount of journalistic content produced, an increase or decrease in reader prices, and a readjustment in the attention of the readership. 
+
+The results of these predictions provides evidence that this reform can be plausibly interpreted as an exogenous and negative shock to the advertising side of the newspaper industry. With these results, we can identify the specific policy or application changes such as the policy where advertisements were only allowed for a few minutes per day and the fact that the quality of televisions were very new around 1970s and televised content were not of high quality. This would lead to a conclusion that the introduction of television advertising sent a direct shock to the advertisement of the newspaper industry and a rather minimal shock to the ability to access content on the reader's side. 
 
 
 
@@ -36,7 +45,40 @@ library(tidyverse)
 #Data
 
 *Paraphrase
-(The) dataset contains annual data on local and national newspapers between 1960 and 1974, as well as detailed information on television content. In 1967, the French government announced it would relax long-standing regulations that prohibited television advertising. We provide evidence that this reform can be plausibly interpreted as an exogenous and negative shock to the advertising side of the newspaper industry… [I]t is likely that the introduction of television advertising constituted a direct shock to the advertising side of the newspaper industry and only an indirect shock to the reader side… (O)ur empirical setting constitutes a unique opportunity to isolate the consequences of a decrease in newspapers’ advertising revenues on their choices regarding the size of their newsroom, the amount of information to produce, and the prices they charge to both sides of the market.
+(The) data-set contains annual data on local and national newspapers between 1960 and 1974, as well as detailed information on television content. In 1967, the French government announced it would relax long-standing regulations that prohibited television advertising. We provide evidence that this reform can be plausibly interpreted as an exogenous and negative shock to the advertising side of the newspaper industry… [I]t is likely that the introduction of television advertising constituted a direct shock to the advertising side of the newspaper industry and only an indirect shock to the reader side… (O)ur empirical setting constitutes a unique opportunity to isolate the consequences of a decrease in newspapers’ advertising revenues on their choices regarding the size of their newsroom, the amount of information to produce, and the prices they charge to both sides of the market.
+
+The data-set that was collected for the use of this paper constructed of an annual balanced panel data-set on local and national newspapers between the years 1960 and 1974. Different sources of paper data were digitized and merged from various historical sources. The French Ministry of Information gave data on prices, revenues, and circulation as newspaper companies were required to report their revenues and prices. Information on subscription prices was calculated by dividing annual subscription prices by the total number of issues in that year. Other variables were included such as the number of issues per year, sales revenue, and advertising revenue, for the purpose of comprehensively reviewing all factors that may lead to the prediction of the exogenous and negative shock to the advertisements in newspapers caused by the decrease in revenue and viewership. A total of 68 local newspapers were sampled, which is a large portion of the local daily newspaper industry and the only ones that were available in the Ministry's archive at the time. An additional 12 national newspapers were sampled circulating between 1960 and 1974. On average, 63 of these newspapers acquire 63 journalists during the time period which is one of the variables that were used to identify newspapers' quality or quantity for journalistic-intensive content. 
+
+One of the main predictors, advertising prices and quantity, data was collected on both price and quantity for the purpose of neglecting the effects of changes in advertisement revenue driven by a change in advertisement prices and quantity. The data on advertising prices was specifically the list price for each column inch of advertising space on newspapers. One major downside and limitation of using listing prices was that often times, discounts were commonly offered in the newspaper industry that creates some bias between list prices and actual prices with no uncertainty. Therefore, an assumption of using list price as a relevant measure of advertising prices as long as discounts were not factored into the actual data. 
+
+As we can see in figure 1, advertising revenues
+
+
+
+Given the wide range of variables, evidence 
+
+```{r, out.width="0.3\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Figure 1."), echo=FALSE}
+knitr::include_graphics("data/results/figures/Figure2.pdf")
+```
+
+
+```{r data}
+#Read the dta file, similar to read_csv()
+newspapers <- read_dta(here::here("Angelucci_Cage_AEJMicro_dataset.dta"))
+
+#Filter out to only use the variables we need
+newspapers_filtered <- 
+  newspapers %>% 
+  dplyr::select(year, id_news, after_national, local, national, # Diff in diff variables
+         ra_cst, qtotal, ads_p4_cst, ads_s, # Advertising side dependents
+         ps_cst, po_cst, qtotal, qs_s, rs_cst) %>% #Reader side dependents
+  mutate(ra_cst_div_qtotal = ra_cst / qtotal) %>% # An advertising side dependents needs to be built
+  mutate_at(vars(id_news, after_national, local, national), ~as.factor(.)) %>% # Change some to factors
+  mutate(year = as.integer(year))
+newspapers_filtered
+```
+
+
 
 \begin{tabular}{l*{1}{cccccc}}
 \hline\hline
@@ -62,24 +104,6 @@ News hole (nonadvertising space)&          13&          13&           4&        
 Advertising space   &           5&           4&           4&           0&          16&         138\\
 \hline\hline
 \end{tabular}
-
-
-
-```{r data}
-#Read the dta file, similar to read_csv()
-newspapers <- read_dta(here::here("Angelucci_Cage_AEJMicro_dataset.dta"))
-
-#Filter out to only use the variables we need
-newspapers_filtered <- 
-  newspapers %>% 
-  dplyr::select(year, id_news, after_national, local, national, # Diff in diff variables
-         ra_cst, qtotal, ads_p4_cst, ads_s, # Advertising side dependents
-         ps_cst, po_cst, qtotal, qs_s, rs_cst) %>% #Reader side dependents
-  mutate(ra_cst_div_qtotal = ra_cst / qtotal) %>% # An advertising side dependents needs to be built
-  mutate_at(vars(id_news, after_national, local, national), ~as.factor(.)) %>% # Change some to factors
-  mutate(year = as.integer(year))
-newspapers_filtered
-```
 
 
 
@@ -192,10 +216,12 @@ huxreg("Subscription price" = subscription_price,
 
 
 # References
-
+- Angelucci, Charles, and Julia Cagé, 2019, ‘Newspapers in times of low advertising revenues’, American Economic Journal: Microeconomics, vol. 11, no. 3, pp. 319-364, DOI: 10.1257/mic.20170306, available at: https://www.aeaweb.org/articles?id=10.1257/mic.20170306.
 
 - Canadian Demographics at a Glance. (2014). Statistics Canada. Catalogue no. 91-003-X.
 
 - R Core Team (2020). R: A language and environment for statistical
   computing. R Foundation for Statistical Computing, Vienna, Austria.
   URL https://www.R-project.org/.
+  
+- Xie Y (2019). “TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live.” TUGboat, 30–32. http://tug.org/TUGboat/Contents/contents40-1.html.
