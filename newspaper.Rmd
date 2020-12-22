@@ -58,7 +58,7 @@ As we can see in figure 1, advertising revenues
 Given the wide range of variables, evidence 
 
 ```{r, out.width="0.3\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Figure 1."), echo=FALSE}
-knitr::include_graphics("data/results/figures/Figure2.pdf")
+knitr::include_graphics("Figure2.pdf")
 ```
 
 
