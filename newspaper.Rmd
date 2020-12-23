@@ -1,16 +1,14 @@
 ---
-title: "Newspapers in Times of Low Advertising Revenues"
+title: "Cause and Effect of Low Advertising Revenues in the Newspaper Industry"
 author: "Zikun (Alex) Xu"
 date: "12/22/2020"
 output:
-  html_document:default
-    df_print: paged
+  html_document: default
+  df_print: paged
   word_document: default
   pdf_document: default
 ---
 
-Author: Zikun (Alex) Xu
-Date: 12/22/2020
 Github repo: https://github.com/xuzi9/final
 
 ```{r setup, include=FALSE, echo=FALSE}
@@ -23,7 +21,6 @@ library(here)
 library(haven)
 library(huxtable)
 library(scales)
-library(tinytex)
 library(tidyverse)
 ```
 
@@ -266,7 +263,8 @@ huxreg("No Diploma" = no_diploma,
        )
 ```
 
-#Results
+# Results
+
 In Table 1 for the results of the effects on the advertising side of the market, our prediction is that we will see a greater decrease in advertising revenues affecting national newspapers than local newspapers and this negative shock is due to the implementation of televised advertisements. As we saw in table 1, we see a decrease of 23% in ad revenue of national newspaper in comparison to ad revenues from the local newspapers. As a result of decreasing advertising revenue, which is driven by a reduction of 31% in the price of advertising, we thus see a 15% fall in advertising revenue corrected by circulation. Along side a 99% and 90% R-squared value for ad revenue and circulation decrease, we can say that this real data fits the regression very well. While the advertising revenue evidently falls in this model, there is no statistically significant changes in the space of advertisements concluding that the negative shock of revenue due to advertisement space is not possible and further statistically proves that advertising revenue for national newspapers has a bigger negative shock compared to local newspapers. 
 
 On the other hand, Table 2 models for the effect on the consumer side of the market. These regressions find out how the shock to advertising revenues affect the pricing of newspapers. From the results in Table 2, we see a 4% decrease in subscription prices of national papers after the introduction of television compared to subscription prices of local newspapers. With a p-value of <0.001 we can say that this result is statistically very significant at the 1 percent level. We also see an increase in unit price by 6% and a decrease in circulation by 6% which are both statistically significant with high R-squared values meaning that these results are highly likely to occur in actual data. Finally, we see a statistically significant increase in the share of subscribers by 19% and revenue from sales decreased by 6% after the shock in newspapers. 
