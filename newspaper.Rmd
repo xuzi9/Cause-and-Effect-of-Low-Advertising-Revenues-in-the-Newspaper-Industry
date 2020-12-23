@@ -20,7 +20,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(broom)
 library(here)
-library(here)
 library(haven)
 library(huxtable)
 library(scales)
@@ -28,11 +27,11 @@ library(tinytex)
 library(tidyverse)
 ```
 
-# Abstract
+## Abstract
+This paper reproduces the results of the key findings in Angelucci and Cage's "Newspapers in Times of Low Advertising Revenues", and analyze the results using the same data-set that is accounted for in the referenced material. With similar results in Angelucci and Cage's paper, we analyzed the effect of a reduction in advertising revenue through linear regression models and creating tables and figures that give the conclusion that ever since the introduction of television, it seems to have a negative effect on the ability of newspapers to produce quality content with changes regarding subscription prices and attracting a different audience. This comes to show that the shock of reducing advertising revenues, results in a chain of reactions affecting the French newspaper industry, either locally or nationally. 
 
 
-
-# Introduction
+## Introduction
 
 In this study, we reproduce the key findings and analyze the data referred from Angelucci and Cage's "Newspapers in Times of Low Advertising Revenues" paper. This paper finds robust evidence that examines the effect of a decrease in the amount of journalist-intensive content produced and the reduction of subscription prices. This data-set was built on newspapers from France between the years 1960 and 1974. As newspaper publishing companies reduce the amount of money invested into journalistic intensive content, specifically due to a decrease in advertising revenue, a difference in differences analysis was performed right between the introduction of television broadcast and advertising was widely accepted. 
 
@@ -40,11 +39,13 @@ Regressions were modeled linearly between the consequences of newspapers' conten
 
 The alternative to newspaper - television platforms - allows advertisement that specifically targets an individual or a group for different purposes such as using a search engine to find specific genre of products. In this paper, we build a model in which the newspaper companies chooses the size of newsroom, prices it charges for the paper, and prices it charges for advertisers. The results of this framework allows us to understand if a relationship between advertising revenues, the number of journalists, and the composition of readership exists and what consequences does an increase or decrease in revenues conclude. Specifically, this model predicts that a drop in advertising revenues may or may not cause a decrease in the amount of journalistic content produced, an increase or decrease in reader prices, and a readjustment in the attention of the readership. 
 
+There are four main empirical predictions made in this paper; first, "A decline in advertising revenues triggers a decrease in newspapers’ newsrooms and amount of journalistic-intensive content"; second, "A decline in advertising revenues leads to a less affluent and educated readership"; third, "A decline in advertising revenues may lead to either an increase or a decrease in reader prices"; and lastly given those conditions being met, "A decline in advertising revenues increases the extent of second-degree price discrimination, as measured by the difference between the unit price and the average subscription price (the “price gap”)". 
+
 The results of these predictions provides evidence that this reform can be plausibly interpreted as an exogenous and negative shock to the advertising side of the newspaper industry. With these results, we can identify the specific policy or application changes such as the policy where advertisements were only allowed for a few minutes per day and the fact that the quality of televisions were very new around 1970s and televised content were not of high quality. This would lead to a conclusion that the introduction of television advertising sent a direct shock to the advertisement of the newspaper industry and a rather minimal shock to the ability to access content on the reader's side. 
 
 
 
-# Data
+## Data
 
 The data-set that was collected for the use of this paper constructed of an annual balanced panel data-set on local and national newspapers between the years 1960 and 1974. Different sources of paper data were digitized and merged from various historical sources. The French Ministry of Information gave data on prices, revenues, and circulation as newspaper companies were required to report their revenues and prices. 
 
@@ -71,7 +72,7 @@ newspapers_filtered <-
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 
 #Shows the revenues of Local and National newspaper companies of these years
 newspapers %>% 
@@ -89,13 +90,13 @@ newspapers %>%
 ```
 
 
-# Model
+## Model
 The model that we are using is:
 $$ln(y_{n,t})= \beta_0 + \beta_1(X_{national}*X_{after 1967})+ \lambda_n + \gamma_t + \epsilon_{n,t}$$
 Where $X_{national}$ be an indicator variable for national newspaper and $X_{after1967}$ be a dummy variable that only applies for observations after 1967 when the news industry transitions into television media. Also, $n$ is the indexes and $t$ is the number of years (being between 1960 and 1974). We also use $\lambda_n$ for the fixed effects of each newspaper as well as $\gamma_t$ for the fixed effect of each year. Since the newspaper and year variables are fixed effects, the $\beta_1$ is what we want are interested in which measures the effect for national newspapers with the new televised advertisement approaches of companies, in which is compared to the response variable, the number of journalists employed for journalistic content. The response variable $y_{n,t}$ is the outcome variable that predicts the outcomes of advertisement transitioning to television on revenue, newspaper prices and quantity. The $\epsilon_{n,t}$ is the newspaper-year shock in which standard error are dispersed around the newspaper level. The major assumption made with this model is that between national and local newspaper, the response variable's $(y_{n,t})$ results apply for both levels of newspapers without the inclusion of the treatment - which prompts deviation from the general trends. The evidence for this assumption relies of the fact that French television companies was state-owned between 1950s and 1980s, therefore there was no interaction between television companies and newspaper companies whether it be local or national. The decision by the French government to introduce advertisement on television was a external factor for newspaper companies. In our OLS models, four regressions were performed to get the results for revenue from sales, revenues from advertisement , display ad rate, and percentage share of advertising. With the same concept we proceed to model 4 different aspects of the impact after television advertisement was introduced being: effects on the advertisement side of the market, effects on the  reader side of the market, and effects on readership. 
 
 ## Table 1. Advertising Side
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE} 
 # Advertising side
 ad_revenue <- lm(log(ra_cst) ~ after_national + id_news + year, data = newspapers_filtered)
 #Revenue affected by 
@@ -124,8 +125,8 @@ omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13",
              "id_news21006", "id_news21025", "id_news21173", "id_news21176", 
              "id_news33718", "id_news34689", "id_news73")
 
-huxreg("Ad. rev." = ad_revenue, 
-       "Ad rev. div. circ." = ad_revenue_div_circulation, 
+huxreg("Ad Revenue" = ad_revenue, 
+       "Ad Revenue/Circulation." = ad_revenue_div_circulation, 
        "Ad price" = ad_price, 
        "Ad space" = ad_space,
         omit_coefs = omit_me, 
@@ -135,11 +136,11 @@ huxreg("Ad. rev." = ad_revenue,
 ```
 
 
-##Table 2. Consumer Side
+## Table 2. Consumer Side
 We then look at the the prices from the consumer or reader side and consider size and content of different newsroom choices. This helps us analyze how the difference in advertisement revenues since the introduction to television has effected the pricing of newspapers (being unit and subscription prices), their circulation, percentage of subscriptions, and revenue from advertisement. 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 
 # Consumer side
 subscription_price <- lm(log(ps_cst) ~ after_national + id_news + year, data = newspapers_filtered)
@@ -177,14 +178,14 @@ huxreg("Subscription price" = subscription_price,
 
 ```
 
-#Table 3. Quality
+## Table 3. Quality
 
 ```{r, echo=FALSE}
 #Model for Quality each of the explanatory variables
 num_journ <- lm(log(nb_journ) ~ after_national + id_news + year, data = newspapers)
 avg_payroll <- lm(ln_av_payroll_cst ~ after_national + id_news + year, data = newspapers)
 pages <- lm(log(pages) ~ after_national + id_news + year, data = newspapers)
-news_hole <- lm(log(news_hole) ~ after_national + id_news + year, data = newspapers)
+news_hole <- lm(-log(news_hole) ~ after_national + id_news + year, data = newspapers)
 share_hard <- lm(log(share_Hard) ~ after_national + id_news + year, data = newspapers)
 
 omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13", 
@@ -217,14 +218,20 @@ huxreg("Number of Journalist" = num_journ,
 ```
 
 
-#Table 4. Readership
+## Table 4. Readership - Education
+
 ```{r, echo=FALSE}
 #Model for Readership each of the explanatory variables
-num_journ <- lm(log(nb_journ) ~ after_national + id_news + year, data = newspapers)
-avg_payroll <- lm(ln_av_payroll_cst ~ after_national + id_news + year, data = newspapers)
-pages <- lm(log(pages) ~ after_national + id_news + year, data = newspapers)
-news_hole <- lm(log(news_hole) ~ after_national + id_news + year, data = newspapers)
-share_hard <- lm(log(share_Hard) ~ after_national + id_news + year, data = newspapers)
+no_diploma <- lm((R_sh_edu_no_ipo) ~ after_national + id_news + year, data = newspapers)
+primary_education <- lm(log(R_sh_edu_primaire_ipo) ~ after_national + id_news + year, data = newspapers)
+secondary_education <- lm(log(R_sh_edu_secondaire_ipo) ~ after_national + id_news + year, data = newspapers)
+professional_education <- lm((R_sh_edu_sup_prof_ipo) ~ after_national + id_news + year, data = newspapers)
+farmers <- lm((R_sh_pcs_agri_ipo) ~ after_national + id_news + year, data = newspapers)
+art_shopkeepers <- lm((R_sh_pcs_patron_ipo) ~ after_national + id_news + year, data = newspapers)
+senior_exec <- lm(log(R_sh_pcs_cadre_ipo) ~ after_national + id_news + year, data = newspapers)
+employees <- lm((R_sh_pcs_employes_ipo) ~ after_national + id_news + year, data = newspapers)
+laborers <- lm((R_sh_pcs_ouvriers_ipo) ~ after_national + id_news + year, data = newspapers)
+inactives <- lm((R_sh_pcs_inactifs_ipo) ~ after_national + id_news + year, data = newspapers)
 
 omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13", 
              "id_news16", "id_news25", "id_news28", "id_news34", "id_news38", 
@@ -244,29 +251,39 @@ omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13",
              "id_news21006", "id_news21025", "id_news21173", "id_news21176", 
              "id_news33718", "id_news34689", "id_news73")
 
-huxreg("Number of Journalist" = num_journ, 
-       "Average Payroll" = avg_payroll, 
-       "Number of Pages" = pages, 
-       "News Hole" = news_hole,
-       "Share of hard news on front page" = share_hard,
+huxreg("No Diploma" = no_diploma,
+       "Primary Education" = primary_education, 
+       "Secondary Education" = secondary_education, 
+       "Professional Education" = professional_education,
+       "Farmers" = farmers,
+       "Art and Shopkeepers" =art_shopkeepers, 
+       "Senior Executives" =senior_exec, 
+       "Employees" =employees, 
+       "Laborers" =laborers, 
+       "Inactive" =inactives, 
        omit_coefs = omit_me, 
        number_format = 2
        )
 ```
 
 #Results
-In the Table 1 for the results of the effects on the advertising side of the market, our prediction is that advertising revenues will decrease and have a negative shock with the implementation of televised advertisements and as we saw in the table 
+In Table 1 for the results of the effects on the advertising side of the market, our prediction is that we will see a greater decrease in advertising revenues affecting national newspapers than local newspapers and this negative shock is due to the implementation of televised advertisements. As we saw in table 1, we see a decrease of 23% in ad revenue of national newspaper in comparison to ad revenues from the local newspapers. As a result of decreasing advertising revenue, which is driven by a reduction of 31% in the price of advertising, we thus see a 15% fall in advertising revenue corrected by circulation. Along side a 99% and 90% R-squared value for ad revenue and circulation decrease, we can say that this real data fits the regression very well. While the advertising revenue evidently falls in this model, there is no statistically significant changes in the space of advertisements concluding that the negative shock of revenue due to advertisement space is not possible and further statistically proves that advertising revenue for national newspapers has a bigger negative shock compared to local newspapers. 
+
+On the other hand, Table 2 models for the effect on the consumer side of the market. These regressions find out how the shock to advertising revenues affect the pricing of newspapers. From the results in Table 2, we see a 4% decrease in subscription prices of national papers after the introduction of television compared to subscription prices of local newspapers. With a p-value of <0.001 we can say that this result is statistically very significant at the 1 percent level. We also see an increase in unit price by 6% and a decrease in circulation by 6% which are both statistically significant with high R-squared values meaning that these results are highly likely to occur in actual data. Finally, we see a statistically significant increase in the share of subscribers by 19% and revenue from sales decreased by 6% after the shock in newspapers. 
+
+In Table 3, we measure the effects on the quality of newspapers. Two key factors were identify as a way to acknowledge the quality of a newspaper. First, the number of journalists to increase the "quality" of journalistic-intensive content, and second, the news hole which is the space of everything on the newspaper except for ads. From the results in the table, we are presented with the impact of the shock on two different measures; first, is an 8% decrease in the number of journalists and second, is a 12% decrease in the news-hole. Although there is an increase in the payroll for journalists, we find no effect of this increase due to the reduction in the news-hole, coverage of news is a lot lower hence observations for payroll is lower than news-hole. There could be a biased result as we are only using two factors to determine the quality of journals and a measure of quality may be affected by other factors such as writers, graphic designers, or printing companies. Furthermore, the fact that newspapers use the same amount of space for content with significantly fewer journalists comes to show that original journalistic-intensive content has been decreased due to the lack of journalists - hence the quality being worse than before. Nevertheless, we still find evidence supporting the fact that quality has been reduced given that the room given for news content has decreased and more space for advertisement in replacement. 
+
+Finally, in table 4, we analyze the effect of readership. From the data, only 38 local newspaper contained data on different education levels and professions while all national newspapers had this data available. After the shock of advertisement revenues decreasing, a change in subscription/unit prices, and worse quality in journalistic content, we see that national newspapers appeared to have more readers that were less-educated such as people with no diploma or a professional education compared to local newspapers. Also, with more readers that worked as farmers and blue-workers fewer senior and white-collar workers who actively read newspapers. 
 
 
 #Discussion
+We interpret how our results differed from the initial empirical predictions. Specifically, how a decrease in advertising revenues and prices drove various dimensions of heterogeneity factors. In the first model, table 1 and 2, where effects of the negative shock to both the advertising side and reader side of the market showed evidence that a decrease in advertisement revenue, caused by the introduction of alternative media platforms, highlights a fall in newspapers' ability to provide journalistic-intensive content with fewer journalists being employed. At the same time, we discovered that readers with less education and working blue collared jobs such as laborers and farmers actually had more participation in the readership of newspapers. This lead to a reduction in the quality and quantity of newspaper journalistic content as a result of decreasing advertisement revenues. While the price of advertisement proved statistically significance, the quantity of advertisement had not changed much. This could be a result of advertisement companies choosing to value large readership while keeping exclusivity the same, which leads to a lower economical reason not to pay extra for this feature and results in a lesser incentive of newspapers to grant exclusivity in turn keeping quantities of advertisement relatively the same while driving prices lower. From the results in model 2, we discovered that advertising revenues did not affect national newspapers as much as after the introduction of television advertisements. In particular, newspapers companies that were more dependent on advertising revenue had a stronger shock than those reliance that were lower. Therefore, we observed an 8% decrease in the number of journalists from national newspaper companies in which strongly relied on advertising revenues. The percentage of decrease would be lower if reliance on advertising revenues is low and have a lesser shock from the decrease in ad revenue. 
 
+From the results in the second models, table 3, we see a distinct decrease in the number of journalists employed by newspaper companies while news-hole actually is seen to be larger than before. This implication means that while the number of journalists decreased providing newspapers with less journalistic-intensive content, there is actually more space for news-related content (anything on the newspapers other than advertisement). This finding suggests that there is a significant decrease in the quality of papers which in turn reduces the potential for more viewership. With the assumption that the better quality of the newspaper, the more people will read the papers which in turn increases advertisement revenue. While journalistic-intensive content costs more and increases unit prices, better content has the ability to attract greater readership and provide larger advertisement revenue; but, as seen from our results, there was a loss in revenue, and decrease in unit pricing which meant that a loss in journalists and quality content was apparent. This shows that newspapers were not able to provide the same or better content to attract more readers, thus when the innovation of television platforms existed at the time, the focus for media coverage shifted and in table 4 we showed that viewership of more affluent people decreased. 
 
+With the concluded decrease in newspaper quality, as advertisement revenues declined, the incentives to invest more in providing better content falls. Which then shows empirical evidence that newspapers would increase unit prices, while decreasing subscription prices shows the method in which newspaper companies used to balance the loss in ad revenue. This price adjustment is apparent and reflects why newspapers decided to lower costs for the purpose of making up the fall in quality measures. By adopting less affluent readers and less educated readers, newspaper companies in France were able to keep a number of readers to still use the generic way of accessing news content and advertisement material. As we continue to discuss the different markets of national and local newspapers, we see that after 1967, the introduction of televised media was becoming increasing popular for more educated and affluent people, which gave a negative shock to the advertisement revenue of newspapers which led to the series of falls. While local and national newspapers were in itself competitors, as it represents majority of news coverage across the country, the introduction of alternate platform directly competes with the same consumers - people who wants to know about news. Although both local and national newspapers markets were shocked by this introduction, local newspapers were less affected proven in the table 1, where we saw 23% decrease in national newspapers in comparison to local newspapers. However, local newspapers used local postal services to delivery subscriptions while national newspaper had to be transported between different provinces which may potentially lead to the bias of difference in postage and train rates. Although, this may lead to a more biased result in our regression model, especially when differentiating the effects from a local or national standpoint, the French government provided subsidies as a solution to counter the effects of low advertisement revenue and low circulation in newspapers. A potential error in our model could if there is correlation in our predictors. But, with the acknowledgement of independent variables due to robust estimates that accounts for no auto-correlation making models that were regressed valid. With the high R-squared values across the three main different focuses, it is safe to say that the trained models fit the data very nicely and that our predictions reflect well of what was happening in the real world. 
 
-
-
-
-
-
+To summarize our conclusion, between 1960 and 1974, the French national newspaper evidently had less advertisement revenue compared to local newspapers due to the introduction of televised media. This shock forced newspaper companies to hire less journalists at the same time increased news-hole, and decreased the overall quality of content being provided to readers. This caused a differentiation between the social factors of newspaper readership being less affluent and had less education. This also caused subscription prices to decrease and jacking up unit prices which acts as an equalized for the decreased advertisement revenue. Since the quality of newspaper related content has decreased while having about the same quantity of news being produced, we can say that newspapers provided more "hard" news such as politics and economy and less "soft" news which is focused more on entertainment. From looking at these effects ever since the introduction of television, we result in the consequences of the decrease in advertisement revenues and the changes that were made during this transitional period. 
 
 
 # References
@@ -274,10 +291,16 @@ In the Table 1 for the results of the effects on the advertising side of the mar
 
 - Canadian Demographics at a Glance. (2014). Statistics Canada. Catalogue no. 91-003-X.
 
+- Chandra, Ambarish. 2009. “Targeted Advertising: The Role of Subscriber Characteristics in Media
+Markets.” Journal of Industrial Economics 57 (1): 58–84.
+
 - Hadley Wickham and Evan Miller (2020). haven: Import and Export 'SPSS', 'Stata' and 'SAS' Files. R package
   version 2.3.1. https://CRAN.R-project.org/package=haven
 
 - H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+
+- Julia Cagé. 2020. Media competition, information provision and political participation: Evidence
+from French local newspapers and elections, 1944–2014. Journal of Public Economics 185, 104077.
 
 - R Core Team (2020). R: A language and environment for statistical
   computing. R Foundation for Statistical Computing, Vienna, Austria.
