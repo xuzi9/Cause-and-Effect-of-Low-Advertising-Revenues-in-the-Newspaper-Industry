@@ -1,2 +1,3 @@
-# final
-Final Project
+# Cause and Effect of Low Advertising Revenues in the Newspaper Industry
+## Abstract
+This paper reproduces the results of the key findings in Angelucci and Cage's "Newspapers in Times of Low Advertising Revenues", and analyze the results using the same data-set that is accounted for in the referenced material. With similar results in Angelucci and Cage's paper, we analyzed the effect of a reduction in advertising revenue through linear regression models and creating tables and figures that give the conclusion that ever since the introduction of television, it seems to have a negative effect on the ability of newspapers to produce quality content with changes regarding subscription prices and attracting a different audience. This comes to show that the shock of reducing advertising revenues, results in a chain of reactions affecting the French newspaper industry, either locally or nationally. 
